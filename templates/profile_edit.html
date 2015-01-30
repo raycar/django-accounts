@@ -1,0 +1,48 @@
+{% extends 'userena/base_userena.html' %}
+{% load i18n %}
+{% load url from future %}
+{% load form_extras %}
+
+{% block title %}{% trans "Profile" %} - {% trans "Edit" %}{% endblock title %}
+
+{% block content_title %}<h2>{% blocktrans with profile.user.username as username %}Account &raquo; {{ username }}{% endblocktrans %}</h2>{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{% trans "Profile" %}: {% trans "Edit" %}</h1>
+    </div>
+
+    <ol class="breadcrumb">
+        <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+        <li><a href="{% url 'userena_profile_detail' profile.user.username %}">{% trans "Account" %}</a></li>
+        <li class="active">{% trans "Edit" %}</li>
+    </ol>
+
+    <form action="" enctype="multipart/form-data" method="post" role="form" class="form-horizontal">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.errors }}
+                {% comment %} Displaying checkboxes differently {% endcomment %}
+                <label for="id_{{ field.name }}" class="col-sm-3 control-label">
+                    {{ field.label }}
+                </label>
+                <div class="col-sm-9">
+                    {{ field|addcss:"form-control" }}
+                </div>
+            </div>
+
+            {% if 'privacy' in field.label %}
+                <div><hr /></div>
+            {% endif %}
+        {% endfor %}
+
+        <div class="form-group">
+        	<div class="col-sm-offset-3 col-sm-9">
+	            <input type="submit" value="{% trans "Save"%}" class="btn btn-default" />
+	        </div>
+        </div>
+    </form>
+{% endblock %}

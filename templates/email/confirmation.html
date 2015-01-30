@@ -1,0 +1,10 @@
+{% extends "base_email.html" %}
+
+{% block content %}
+	<h1>Hello, {{ user.email }}</h1>
+
+	<p>
+		Please click <a href="{{ confirmation_url }}">here</a> or copy the following URL into your browsers to confirm your email address.
+	</p>
+	<p>{{ confirmation_url }}</p>
+{% endblock content %}

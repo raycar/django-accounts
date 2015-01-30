@@ -1,0 +1,4 @@
+Hello {{ user.email }}, thanks for registering with us.
+
+Please copy the following url to your browser to confirm your email address:
+{{ confirmation_url }}

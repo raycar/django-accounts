@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load url from future %}
+{% load form_extras %}
+
+{% block title %}{% trans "Account Update" %}{% endblock %}
+
+{% block content %}
+	<div class="page-header">
+		<h1>{% trans "Update" %}</h1>
+	</div>
+
+	<form action="{% url 'account:update' %}" method="post" role="form" class="form-horizontal">
+		{% csrf_token %}
+
+		{% if form.non_field_errors %}
+			<div class="form-group">
+				<div class="col-sm-offset-3 col-sm-9">
+					{{ form.non_field_errors }}
+					<br />
+				</div>
+			</div>
+		{% endif %}
+
+		{% for field in form %}
+			<div class="form-group">
+				{% comment %} Displaying checkboxes differently {% endcomment %}
+				{% if field.name == 'remember_me' %}
+					<div class="col-sm-offset-3 col-sm-9">
+						<div class="checkbox">
+							<label for="id_{{ field.name }}">
+								{{ field }} {{ field.label }}
+							</label>
+						</div>
+					</div>
+				{% else %}
+					<label for="id_{{ field.name }}" class="col-sm-3 control-label">
+						{{ field.label }}
+					</label>
+					<div class="col-sm-9">
+						{{ field|addcss:"form-control" }}
+						{% if field.errors %}
+							<br />
+							{{ field.errors }}
+							<br />
+						{% endif %}
+					</div>
+				{% endif %}
+			</div>
+		{% endfor %}
+
+		<div class="form-group">
+			<div class="col-sm-offset-3 col-sm-9">
+				<input type="submit" value="{% trans "Update" %}" class="btn btn-default" />
+			</div>
+		</div>
+	</form>
+{% endblock %}
+{% block javascripts %}
+	<script type="text/javascript">
+		$(document).ready(function($) {
+			$('#id_country').change(function() {
+				$.ajax({
+					url: '/accounts/ajax/cities/'+$('#id_country').val(),
+					type: 'GET',
+					dataType: 'json',
+				})
+				.done(function(data) {
+					if (data.length > 0) {
+						htmlData = '';
+						for (var i = 0; i < data.length; i++) {
+							htmlData += '<option value="'+data[i]['pk']+'">'+data[i]['fields']['display_name']+'</option>';
+						};
+
+						$('#id_city option').remove();
+						$('#id_city').append(htmlData);
+					};
+				})
+				.fail(function() {});
+			});
+		});
+	</script>
+{% endblock javascripts %}
