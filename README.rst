@@ -16,11 +16,11 @@ Quick start
         'django-accounts',
     )
 
-    2. Include the polls URLconf in your project urls.py like this::
+2. Include the polls URLconf in your project urls.py like this::
 
-        url(r'^accounts/', include('django-accounts.urls')),
+    url(r'^accounts/', include('django-accounts.urls')),
 
-    3. Run `python manage.py migrate` to create the django-accounts models.
+3. Run `python manage.py migrate` to create the django-accounts models.
 
-    4. Start the development server and visit http://127.0.0.1:8000/accounts/create
+4. Start the development server and visit http://127.0.0.1:8000/accounts/create
         to create an account.
